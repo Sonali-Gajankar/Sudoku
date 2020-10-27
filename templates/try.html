@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<title>Test</title>
+	<style type="text/css">
+		.grid-container {
+			display: grid;
+			grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+			grid-template-rows: 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+			background-color: white;
+			padding: 15px;
+		}
+		.grid-item {
+			background-color: rgba(255, 255, 255, 0.8);
+			border: 1px solid rgba(0, 0, 0, 0.8);
+			padding: 10px;
+			font-size: 20px;
+			text-align: center;
+		}
+		.grid-line {
+			border-bottom: 2px solid;
+		}
+		.grid-vertical {
+			border-right: 2px solid;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+			<div class="container-fluid">
+				<img class="navbar-brand" src="{{url_for('static',filename='s1.png')}}" style="width:50px;height:50px;">
+			Sudoku!!
+			</div>
+	</nav>
+	<form class="container" action="{{url_for('index')}}" method="POST">
+		
+		<div class="grid-container">
+			{% set count=[0] %}
+
+			{% for i in form %}
+				{% for j in i %}
+					{% set name=count|length ~ loop.index %}
+					{% if count|length == 3 or count|length==6 %}
+						{% if j!=0 %}
+							{% if loop.index == 3 or loop.index==6 %}
+								<input class="grid-item grid-line grid-vertical" type="text" name={{name}} value={{j}} maxlength="1" readonly >
+							{% else %}
+								<input class="grid-item grid-line" type="text" name={{name}} value={{j}} maxlength="1" readonly >
+							{% endif %}
+						{% else %}
+							{% if loop.index == 3 or loop.index==6 %}
+								<input class="grid-item grid-line grid-vertical" type="text" name={{name}} value="" maxlength="1" >
+							{% else %}
+								<input class="grid-item grid-line" type="text" name={{name}} value="" maxlength="1" >
+							{% endif %}
+						{% endif %}
+					{% else %}
+						{% if j!=0 %}
+							{% if loop.index == 3 or loop.index==6 %}
+							<input class="grid-item grid-vertical" type="text" name={{name}} value={{j}} readonly >
+							{% else %}
+							<input class="grid-item" type="text" name={{name}} value={{j}} readonly >
+							{% endif %}
+						{% else %}
+							{% if loop.index == 3 or loop.index==6 %}
+							<input class="grid-item grid-vertical" type="text" pattern="[0-9.]+" name={{name}} value="" maxlength="1" >
+							{% else %}
+							<input class="grid-item" type="text" pattern="[0-9.]+" name={{name}} value="" maxlength="1" >
+							{% endif %}
+						{% endif %}		
+					{% endif %}			
+
+				{% endfor %}
+				{% set __=count.append(1) %}
+			{% endfor %} 
+		  
+		</div>
+		{% if disable != true %}
+		<input type="submit" name="submit" value="Done">
+
+		<button type="submit" name="Solve" value="solve"> Solve </button>
+		
+		{% endif %}
+		<br><br>
+
+		{% if result!= None and result == true %}
+		<label style="color: Green">Solved Successfully!!</label>
+		{% elif  result != None and result == false %}
+		<label style="color: Red">Sorry, Incorrect Solution!! Try again.</label>
+		{% endif %}
+
+	</form>
+</body>
+</html>

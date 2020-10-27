@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+{% set count=[0] %}
+{% for i in form %}
+	{% for j in i %}
+	<div>i: {{i}}</div>
+	<div>count: {{count}}</div>
+	<div>j: {{j}}</div>
+	<div>loop index: {{loop.index}}</div>
+
+		{% if count|length == 3 or count|length==6 %}
+						{% if j!=0 %}
+							{% if loop.index == 3 or loop.index==6 %}
+							{% else %}
+							{% endif %}
+						{% else %}
+							{% if loop.index == 3 or loop.index==6 %}
+							{% else %}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+
+					{% if j!=0 %}
+						{% if loop.index == 3 or loop.index==6 %}
+						{% else %}
+						{% endif %}
+					{% else %}
+						{% if loop.index == 3 or loop.index==6 %}
+						{% else %}
+						{% endif %}
+					{% endif %}		
+	{% endfor %}
+	{% set __=count.append(1) %}
+{% endfor %}
+</body>
+</html>
+
+
